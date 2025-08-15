@@ -1,0 +1,26 @@
+name: snyk-security
+
+on: [push, pull_request]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Authenticate Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Test dependencies for vulnerabilities
+        run: snyk test --all-projects
+
+      - name: Monitor project in Snyk
+        run: snyk monitor --all-projects
+
+      - name: Scan code for vulnerabilities
+        run: snyk code test --all-projects --include-ignores
