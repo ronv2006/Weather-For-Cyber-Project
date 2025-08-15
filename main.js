@@ -1,9 +1,13 @@
 const express = require('express');
 const path = require('path');
 
+require('dotenv').config();
+
 const app = express();
 const PORT = 3000;
-const API_KEY = 'd6ada31211c54290a18144734251108';
+const API_KEY = process.env.Weather_API_Key;
+
+app.disable('x-powered-by');
 
 app.use(express.static('public'));
 
